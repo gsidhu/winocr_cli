@@ -4,7 +4,7 @@ A minimal command line application for converting images and PDFs to text using 
 The application is just a wrapper around the [winocr](https://github.com/GitHub30/winocr) Python package.
 
 ## How to use it
-1. **Download the executable:** Download the `winocr_cli.exe` file from the [Releases](https://github.com/thatgurjot/winocr_cli/releases) section of this repository.
+1. **Download the executable:** Download the `winocr_cli.exe` file from the [Releases](https://github.com/gsidhu/winocr_cli/releases) section of this repository.
 2. **Open Command Prompt or PowerShell:** Navigate to the directory where you downloaded the `winocr_cli.exe` file.
 3. **Run the command:** Use the following command syntax:
 ```
@@ -42,4 +42,4 @@ python winocr_cli.py -l "en" -i \path\to\image.png -o \path\to\output.txt
 Contributions are welcome! If you'd like to contribute to winocr_cli, please submit a pull request detailing the changes you made.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details.
