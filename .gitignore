@@ -1,0 +1,8 @@
+venv
+poppler*
+temp_output
+*.txt
+test*
+dist
+build
+*.spec
