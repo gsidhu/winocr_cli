@@ -10,15 +10,16 @@ from pdf2image import convert_from_path
 silent_mode = False
 default_poppler_path = ".\\poppler-24.02.0\\Library\\bin"
 
-def process_file(input_file, output_file, language, silent_mode=False):
+def process_file(input_file, output_file, language, silent_mode=False, poppler_path=default_poppler_path):
     if input_file.lower().endswith(".pdf"):
-        process_pdf(input_file, output_file, language, silent_mode)
+        process_pdf(input_file, output_file, language, silent_mode, poppler_path)
     else:
         process_image(input_file, output_file, language, silent_mode)
 
-def process_pdf(input_file, output_file, language, silent_mode=False):
+def process_pdf(input_file, output_file, language, silent_mode=False, poppler_path=default_poppler_path):
     # check if Poppler is installed
-    if not os.path.exists(default_poppler_path + "\\pdftoppm.exe"):
+    print("Poppler path: " + poppler_path)
+    if not os.path.exists(poppler_path + "\\pdftoppm.exe"):
         if not silent_mode:
             print("\nError: Poppler not found. Please run winocr_cli.exe --setup to setup Poppler. Or recheck the provided Poppler path.")
         return
@@ -27,7 +28,7 @@ def process_pdf(input_file, output_file, language, silent_mode=False):
     output_folder = "temp_output"
     os.mkdir(output_folder)
     images = convert_from_path(input_file,
-                               poppler_path=default_poppler_path,
+                               poppler_path=poppler_path,
                                output_folder=output_folder,
                                grayscale=True)
     for filename in os.listdir(output_folder):
@@ -49,6 +50,25 @@ def combine_output(output_file, silent_mode=False):
                     f.write("\n")
     if not silent_mode:
         print("Saved final output to", output_file)
+
+def delete_temporary_files():
+    output_folder = "temp_output"
+    # Delete temporary files
+    for filename in os.listdir(output_folder):
+        file_path = os.path.join(output_folder, filename)
+        try:
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        except Exception as e:
+            print(f"Failed to delete {file_path}: {e}")
+
+    # Delete temporary folder
+    try:
+        os.rmdir(output_folder)
+        if not silent_mode:
+            print(f"Deleted {output_folder} directory.")
+    except Exception as e:
+        print(f"Failed to delete {output_folder} directory: {e}")
 
 def process_image(input_file, output_file, language, silent_mode=False):
     if not silent_mode:
@@ -80,7 +100,6 @@ def setup_poppler(silent_mode):
     if not silent_mode:
         print("Poppler setup complete")
     
-
 def main():
     global silent_mode
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter, 
@@ -107,6 +126,7 @@ Example usage: winocr_cli.exe -i input_image.png input_pdf.pdf -o output_image.t
     
     args = parser.parse_args()
     silent_mode = args.silent
+    poppler_path = args.poppler_path
 
     if args.setup:
         setup_poppler(silent_mode)
@@ -124,10 +144,12 @@ Example usage: winocr_cli.exe -i input_image.png input_pdf.pdf -o output_image.t
     with concurrent.futures.ProcessPoolExecutor() as executor:
         futures = []
         for input_file, output_file in zip(args.input, args.output):
-            futures.append(executor.submit(process_file, input_file, output_file, args.language, silent_mode))
+            futures.append(executor.submit(process_file, input_file, output_file, args.language, silent_mode, poppler_path))
         
         # Wait for all tasks to complete
         concurrent.futures.wait(futures)
+
+    delete_temporary_files()
 
 if __name__ == "__main__":
     freeze_support()

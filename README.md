@@ -40,6 +40,7 @@ If you get an error saying: _The term 'pyinstaller' is not recognized as the nam
 (Required) For building the app -
 - `winocr`
 - `pillow` (PIL)
+- `pdf2image`
 - `pyinstaller` (for creating the executable file)
 
 (Optional) For running the app -
