@@ -22,15 +22,28 @@ Once the command is executed, the output text file(s) will be generated at the s
 
 ## How to build it from source 
 1. **Clone the repository.**
-2. **Install dependencies:** Navigate to the cloned directory and install the required dependencies.
-3. **Run the script:** Navigate to the `src` directory and run the script using Python:
+2. **Install dependencies:** Navigate to the cloned directory and install the [required dependencies](#dependencies).
+3. **Run the script:** In the directory root, run this script using Python:
 ```
 python winocr_cli.py -l "en" -i \path\to\image.png -o \path\to\output.txt
 ```
 
+If you are using `venv` on Windows, in Powershell, you may have to run `Set-ExecutionPolicy Unrestricted -Scope Process` before running `venv\Scripts\activate`.
+
+If the script runs as expected, you can now build the app.
+
+4. **Build the app:** Run `pyinstaller --onefile winocr_cli.py` to build the executable. 
+
+If you get an error saying: _The term 'pyinstaller' is not recognized as the name of a cmdlet, function, script file, or operable program._, try running `python -m PyInstaller --onefile winocr_cli.py` instead.
+
 ### Dependencies
+(Required) For building the app -
 - `winocr`
 - `pillow` (PIL)
+- `pyinstaller` (for creating the executable file)
+
+(Optional) For running the app -
+- `poppler` (for handling PDFs; run `winocr_cli.exe --setup` to download poppler in the default location)
 
 ## Note
 - Ensure that the input image file exists and is accessible from the command line.

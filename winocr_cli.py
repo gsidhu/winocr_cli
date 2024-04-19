@@ -100,7 +100,7 @@ Example usage: winocr_cli.exe -i input_image.png input_pdf.pdf -o output_image.t
     parser.add_argument("-l", "--language", type=str, default="en", help="Language for OCR (default: en)")
     parser.add_argument("-o", "--output", nargs='*', type=str, help="Output file path(s)")
     parser.add_argument("-s", "--silent", action='store_true', help="Run operations silently. Does not print any output to console.")
-    parser.add_argument("--poppler_path", type=str, default=default_poppler_path, help="Path to Poppler (default: %(default)s)")
+    parser.add_argument("--poppler-path", type=str, default=default_poppler_path, help="Path to Poppler (default: %(default)s)")
     
     setup_group = parser.add_mutually_exclusive_group()
     setup_group.add_argument("--setup", action='store_true', help="Setup Poppler for PDF processing")
